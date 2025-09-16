@@ -21,3 +21,8 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+
+# External API Configuration
+external:
+  open-library:
+    api-url: https://openlibrary.org/search.json

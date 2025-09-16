@@ -13,10 +13,6 @@ CREATE TABLE IF NOT EXISTS books (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Clear existing data (optional - uncomment if you want to reset)
--- DELETE FROM books;
-
--- Insert sample books (same as DataInitializer.java)
 INSERT INTO books (title, author, isbn, publication_year, is_available, created_at, updated_at) 
 VALUES (
     'The Great Gatsby',

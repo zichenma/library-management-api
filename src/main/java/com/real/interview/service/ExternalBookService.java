@@ -3,6 +3,7 @@ package com.real.interview.service;
 import com.real.interview.dto.ExternalBookDto;
 import com.real.interview.dto.ExternalBookResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,11 +16,12 @@ public class ExternalBookService {
     
     private final RestTemplate restTemplate;
     
-    private static final String OPEN_LIBRARY_API_URL = "https://openlibrary.org/search.json";
+    @Value("${external.open-library.api-url}")
+    private String openLibraryApiUrl;
     
     public List<ExternalBookDto> searchBooksByTitle(String title) {
         try {
-            String url = String.format("%s?q=title:%s&limit=5", OPEN_LIBRARY_API_URL, title);
+            String url = String.format("%s?q=title:%s&limit=5", openLibraryApiUrl, title);
             ExternalBookResponse response = restTemplate.getForObject(url, ExternalBookResponse.class);
             
             if (response != null && response.getBooks() != null) {
