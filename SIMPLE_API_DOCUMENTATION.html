@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Library Management System API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .overview {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .overview h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .overview ol {
+            margin-left: 20px;
+        }
+
+        .overview li {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .base-url {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h2::before {
+            content: '';
+            width: 4px;
+            height: 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            margin-right: 15px;
+            border-radius: 2px;
+        }
+
+        .endpoint {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+        }
+
+        .endpoint h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+
+        .method.get { background: #d4edda; color: #155724; }
+        .method.post { background: #cce5ff; color: #004085; }
+        .method.put { background: #fff3cd; color: #856404; }
+        .method.delete { background: #f8d7da; color: #721c24; }
+
+        .endpoint-url {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 8px 12px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        .endpoint-details {
+            margin-top: 15px;
+        }
+
+        .endpoint-details p {
+            margin-bottom: 8px;
+        }
+
+        .endpoint-details strong {
+            color: #495057;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .code-block.json {
+            background: #1a202c;
+        }
+
+        .code-block.bash {
+            background: #2d3748;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .quick-start {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .quick-start h2 {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .quick-start ol {
+            margin-left: 20px;
+        }
+
+        .quick-start li {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .quick-start code {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Simple Library Management System API</h1>
+        </div>
+
+        <div class="overview">
+            <h2>Overview</h2>
+            <p>This is a simplified Library Management System that demonstrates:</p>
+            <ol>
+                <li><strong>Basic CRUD operations</strong> with local database</li>
+                <li><strong>External API integration</strong> with Open Library API</li>
+                <li><strong>Data import</strong> from external API to local database</li>
+            </ol>
+            
+            <div class="base-url">
+                <strong>Base URL:</strong> http://localhost:8080/api/books
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🏠 Local Database CRUD Operations</h2>
+            
+            <div class="endpoint">
+                <h3>1. Get All Books</h3>
+                <span class="method get">GET</span>
+                <div class="endpoint-url">/api/books</div>
+                <div class="endpoint-details">
+                    <p><strong>Description:</strong> Retrieve all books from local database</p>
+                    <p><strong>Response:</strong> Array of book objects</p>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <h3>2. Get Book by ID</h3>
+                <span class="method get">GET</span>
+                <div class="endpoint-url">/api/books/{id}</div>
+                <div class="endpoint-details">
+                    <p><strong>Description:</strong> Retrieve a specific book by its ID</p>
+                    <p><strong>Parameters:</strong> <code>id</code> (Long) - Book ID</p>
+                    <p><strong>Response:</strong> Book object or 404 if not found</p>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <h3>3. Search Books</h3>
+                <span class="method get">GET</span>
+                <div class="endpoint-url">/api/books/search?keyword={keyword}</div>
+                <div class="endpoint-details">
+                    <p><strong>Description:</strong> Search books in local database</p>
+                    <p><strong>Parameters:</strong> <code>keyword</code> (String) - Search term</p>
+                    <p><strong>Response:</strong> Array of matching book objects</p>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <h3>4. Create Book</h3>
+                <span class="method post">POST</span>
+                <div class="endpoint-url">/api/books</div>
+                <div class="endpoint-details">
+                    <p><strong>Description:</strong> Add a new book to local database</p>
+                    <p><strong>Request Body:</strong> Book object (JSON)</p>
+                    <p><strong>Response:</strong> Created book object</p>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <h3>5. Update Book</h3>
+                <span class="method put">PUT</span>
+                <div class="endpoint-url">/api/books/{id}</div>
+                <div class="endpoint-details">
+                    <p><strong>Description:</strong> Update an existing book</p>
+                    <p><strong>Parameters:</strong> <code>id</code> (Long) - Book ID</p>
+                    <p><strong>Request Body:</strong> Book object (JSON)</p>
+                    <p><strong>Response:</strong> Updated book object</p>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <h3>6. Delete Book</h3>
+                <span class="method delete">DELETE</span>
+                <div class="endpoint-url">/api/books/{id}</div>
+                <div class="endpoint-details">
+                    <p><strong>Description:</strong> Remove a book from local database</p>
+                    <p><strong>Parameters:</strong> <code>id</code> (Long) - Book ID</p>
+                    <p><strong>Response:</strong> 204 No Content</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🌐 External API Integration</h2>
+            
+            <div class="endpoint">
+                <h3>7. Search External Books</h3>
+                <span class="method get">GET</span>
+                <div class="endpoint-url">/api/books/external/search?title={title}</div>
+                <div class="endpoint-details">
+                    <p><strong>Description:</strong> Search books from Open Library API</p>
+                    <p><strong>Parameters:</strong> <code>title</code> (String) - Book title to search</p>
+                    <p><strong>Response:</strong> Array of external book objects</p>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <h3>8. Import External Book</h3>
+                <span class="method post">POST</span>
+                <div class="endpoint-url">/api/books/external/import</div>
+                <div class="endpoint-details">
+                    <p><strong>Description:</strong> Import a book from external API to local database</p>
+                    <p><strong>Request Body:</strong> External book object (JSON)</p>
+                    <p><strong>Response:</strong> Created book object in local database</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📋 Data Structures</h2>
+            
+            <h3>Local Book Object</h3>
+            <div class="code-block json">{
+  "id": 1,
+  "title": "The Great Gatsby",
+  "author": "F. Scott Fitzgerald",
+  "isbn": "978-0-7432-7356-5",
+  "publicationYear": 1925,
+  "isAvailable": true,
+  "createdAt": "2025-09-14T08:28:02.094",
+  "updatedAt": "2025-09-14T08:28:02.094"
+}</div>
+
+            <h3>External Book Object</h3>
+            <div class="code-block json">{
+  "title": "Effective Java",
+  "author_name": ["Joshua Bloch"],
+  "isbn": ["978-0134685991"],
+  "first_publish_year": 2001,
+  "firstAuthor": "Joshua Bloch",
+  "firstIsbn": "978-0134685991"
+}</div>
+        </div>
+
+        <div class="section">
+            <h2>🧪 Sample Usage</h2>
+            
+            <h3>1. Get all local books</h3>
+            <div class="code-block bash">curl -X GET http://localhost:8080/api/books</div>
+
+            <h3>2. Create a new book</h3>
+            <div class="code-block bash">curl -X POST http://localhost:8080/api/books \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Sample Book",
+    "author": "Sample Author",
+    "isbn": "978-0-123456789-0",
+    "publicationYear": 2023
+  }'</div>
+
+            <h3>3. Search external books</h3>
+            <div class="code-block bash">curl -X GET "http://localhost:8080/api/books/external/search?title=java"</div>
+
+            <h3>4. Import external book to local database</h3>
+            <div class="code-block bash">curl -X POST http://localhost:8080/api/books/external/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Effective Java",
+    "author_name": ["Joshua Bloch"],
+    "first_publish_year": 2001
+  }'</div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Key Features Demonstrated</h2>
+            <div class="features">
+                <div class="feature">
+                    <h4>RESTful API Design</h4>
+                    <p>Standard HTTP methods and status codes</p>
+                </div>
+                <div class="feature">
+                    <h4>Database Operations</h4>
+                    <p>CRUD operations with SQLite</p>
+                </div>
+                <div class="feature">
+                    <h4>External API Integration</h4>
+                    <p>HTTP calls to third-party services</p>
+                </div>
+                <div class="feature">
+                    <h4>Data Transformation</h4>
+                    <p>Converting external data to local format</p>
+                </div>
+                <div class="feature">
+                    <h4>Error Handling</h4>
+                    <p>Proper exception handling and HTTP status codes</p>
+                </div>
+                <div class="feature">
+                    <h4>Validation</h4>
+                    <p>Input validation with Jakarta Validation</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-start">
+            <h2>🚀 Quick Start</h2>
+            <ol>
+                <li><strong>Start the application:</strong> <code>mvn spring-boot:run</code></li>
+                <li><strong>Test local CRUD:</strong> Use endpoints 1-6 above</li>
+                <li><strong>Test external API:</strong> Use endpoints 7-8 above</li>
+                <li><strong>View database:</strong> Check <code>library.db</code> file in project root</li>
+            </ol>
+        </div>
+
+        <div class="footer">
+            <p>This simplified version focuses on the core concepts needed for a 45-minute interview demonstration.</p>
+        </div>
+    </div>
+</body>
+</html>

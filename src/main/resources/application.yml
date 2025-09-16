@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: library-management-api
+  
+  # SQLite Database Configuration
+  datasource:
+    url: jdbc:sqlite:library.db
+    driver-class-name: org.sqlite.JDBC
+    username: 
+    password: 
+  
+  # JPA Configuration
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
